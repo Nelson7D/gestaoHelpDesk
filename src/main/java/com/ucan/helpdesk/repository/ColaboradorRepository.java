@@ -11,7 +11,7 @@ public interface ColaboradorRepository extends JpaRepository<Colaborador, Long> 
 
     List<Colaborador> findBySetor(String setor);
 
-    // Novo método: Buscar colaboradores com mais de X tickets criados
+    // Buscar colaboradores com mais de X tickets criados
     @Query("SELECT c FROM Colaborador c JOIN FETCH c.ticketsCriados WHERE SIZE(c.ticketsCriados) > :minTickets")
     List<Colaborador> findColaboradoresComMaisDeXTickets(int minTickets);
 
