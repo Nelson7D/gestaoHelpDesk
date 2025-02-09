@@ -1,0 +1,5 @@
+package com.ucan.helpdesk.enums;
+
+public enum EventoLog {
+    TICKET_CRIADO, STATUS_ATUALIZADO, FECHAMENTO_TICKET, REGISTRO_ACAO, ESCALONAMENTO_TICKET
+}
