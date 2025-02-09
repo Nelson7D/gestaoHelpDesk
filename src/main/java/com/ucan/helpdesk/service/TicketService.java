@@ -2,6 +2,7 @@ package com.ucan.helpdesk.service;
 
 import com.ucan.helpdesk.enums.Prioridade;
 import com.ucan.helpdesk.enums.StatusTicket;
+import com.ucan.helpdesk.enums.TipoUsuarioSuporte;
 import com.ucan.helpdesk.model.*;
 import com.ucan.helpdesk.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class TicketService {
             throw new RuntimeException("Ticket já está escalonado");
         }
 
-        Optional<UsuarioSuporte> supervisor = usuarioSuporteRepository.findByTipo("SUPERVISOR");
+        Optional<UsuarioSuporte> supervisor = usuarioSuporteRepository.findByTipo(TipoUsuarioSuporte.SUPERVISOR).stream().findFirst();
 
         if (supervisor.isPresent()) {
             ticket.setFkTecnicoResponsavel(supervisor.get());
