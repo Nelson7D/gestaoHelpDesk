@@ -48,7 +48,7 @@ public class TicketService {
     }
 
     // Criar um novo ticket
-    public Ticket createTicket(String descricao, String categoriaId, String impacto) {
+    public Ticket criarTicket(String descricao, String categoriaId) {
         Categoria categoria = categoriaRepository.findById(Long.parseLong(categoriaId))
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
 

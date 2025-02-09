@@ -15,4 +15,6 @@ public interface SLARepository extends JpaRepository<SLA, Long> {
     List<SLA> findByTempoMaximoResolucaoLessThanEqual(Integer tempo);
 
     Optional<SLA> findByFkCategoria(Categoria categoria);
+
+    Optional<SLA> findByFkCategoriaId(long fkCategoria);
 }

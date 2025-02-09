@@ -43,6 +43,10 @@ public class LogService {
         return logRepository.findByFkTicket(ticket);
     }
 
+    public Optional<Ticket> buscarPorTicketId(Long fkTicket) {
+        return ticketRepository.findById(fkTicket);
+    }
+
     public Log salvar(Log log) {
         return logRepository.save(log);
     }

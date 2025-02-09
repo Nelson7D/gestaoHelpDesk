@@ -39,6 +39,7 @@ public class Ticket {
 
     @OneToMany(mappedBy = "fkTicket", cascade = CascadeType.ALL)
     private List<Log> logs;
+
     private String feedback;
 
     public Ticket() {}
