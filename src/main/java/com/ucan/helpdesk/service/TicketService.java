@@ -60,8 +60,7 @@ public class TicketService {
         ticket.setDataHoraCriacao(new Date());
 
         // Registrar log no Kafka
-        kafkaTemplate.send("ticket-created", "Novo ticket criado: " + ticket.getDescricao());
-
+        kafkaTemplate.send("ticket-criado", "Ticket ID: "+ticket.getPkTicket()+"/nNovo ticket criado: " + ticket.getDescricao());
         return ticketRepository.save(ticket);
     }
 

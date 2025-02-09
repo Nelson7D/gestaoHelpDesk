@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_usuario")
+@MappedSuperclass
 @Data
 public class Usuario {
 

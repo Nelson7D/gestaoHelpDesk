@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Data
-@DiscriminatorValue("COLABORADOR")
+@Table(name = "colaborador")
 public class Colaborador extends Usuario {
     private String setor;
 
