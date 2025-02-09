@@ -4,9 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.antlr.v4.runtime.misc.NotNull;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_usuario")
+import java.util.HashSet;
+import java.util.Set;
+
+@MappedSuperclass
 @Data
 public class Usuario {
 
@@ -24,4 +25,7 @@ public class Usuario {
     private String senha;
 
     private String status;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles = new HashSet<>(); // Ex.: "COLABORADOR", "TECNICO", "SUPERVISOR", "ADMINISTRADOR"
 }

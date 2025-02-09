@@ -39,8 +39,8 @@ public class TicketController {
     // Criar um novo ticket
     @PostMapping
     public ResponseEntity<Ticket> criarTicket(@RequestBody Ticket ticket) {
-        Ticket createdTicket = ticketService.criarTicket(ticket.getDescricao(), ticket.getFkCategoria().getPkCategoria().toString());
-        return ResponseEntity.status(201).body(createdTicket);
+        Ticket ticketCriado = ticketService.novoTicket(ticket.getDescricao());
+        return ResponseEntity.status(201).body(ticketCriado);
     }
 
     // Atualizar status de um ticket

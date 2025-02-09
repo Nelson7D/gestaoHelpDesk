@@ -1,5 +1,5 @@
 package com.ucan.helpdesk.enums;
 
 public enum StatusTicket {
-    ABERTO, EM_ANDAMENTO, RESOLVIDO, ESCALONADO
+   ENVIADO, ABERTO, EM_ANDAMENTO, RESOLVIDO, ESCALONADO
 }

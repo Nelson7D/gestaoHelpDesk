@@ -3,6 +3,7 @@ package com.ucan.helpdesk.service;
 import com.ucan.helpdesk.model.Usuario;
 import com.ucan.helpdesk.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<Usuario> listarTodos() {
         return usuarioRepository.findAll();
@@ -31,7 +35,12 @@ public class UsuarioService {
         return usuarioRepository.findByEmailAndStatus(email, status);
     }
     // Salvar / Criar usúario
-    public Usuario salvar(Usuario usuario) {
+    public Usuario criarUsuario(Usuario usuario) {
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+
+        if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+            usuario.getRoles().add("COLABORADOR");
+        }
         return usuarioRepository.save(usuario);
     }
 
@@ -47,5 +56,7 @@ public class UsuarioService {
                 })
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
+
+
 
 }

@@ -33,8 +33,8 @@ public class UsuarioController {
     // Criar um novo usuário
     @PostMapping
     public ResponseEntity<Usuario> criarUsuario(@RequestBody Usuario usuario) {
-        Usuario savedUsuario = usuarioRepository.save(usuario);
-        return ResponseEntity.status(201).body(savedUsuario);
+        Usuario novoUsuario = usuarioRepository.save(usuario);
+        return ResponseEntity.status(201).body(novoUsuario);
     }
 
     // Atualizar informações de um usuário

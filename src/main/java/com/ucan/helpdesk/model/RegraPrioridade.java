@@ -14,4 +14,8 @@ public class RegraPrioridade {
     private String palavraChave;
     private String categoriaId;
     private Prioridade prioridade;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_categoria")
+    private Categoria fkCategoria;
 }

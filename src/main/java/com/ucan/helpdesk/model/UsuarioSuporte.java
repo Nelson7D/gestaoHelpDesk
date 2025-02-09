@@ -1,10 +1,7 @@
 package com.ucan.helpdesk.model;
 
 import com.ucan.helpdesk.enums.TipoUsuarioSuporte;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -12,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "usuario_suporte")
 @Data
 public class UsuarioSuporte extends Usuario {
 

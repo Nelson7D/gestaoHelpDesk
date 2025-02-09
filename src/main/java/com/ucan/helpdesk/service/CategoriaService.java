@@ -39,37 +39,6 @@ public class CategoriaService {
         return categoriaRepository.save(categoria);
     }
 
-    // Importar categorias do arquivo Excel
-    public void importarCategorias(String filePath) throws IOException {
-        FileInputStream file = new FileInputStream(filePath);
-        Workbook workbook = WorkbookFactory.create(file);
-        Sheet sheet = workbook.getSheet("Categorias");
-
-        List<Categoria> categorias = new ArrayList<>();
-        for (Row row : sheet) {
-            if (row.getRowNum() == 0) continue; // Ignorar cabeçalho
-
-            Categoria categoria = new Categoria();
-            categoria.setNome(row.getCell(1).getStringCellValue());
-            categoria.setNivel((int) row.getCell(2).getNumericCellValue());
-
-            String categoriaPaiId = row.getCell(3).getStringCellValue();
-            if (!categoriaPaiId.isEmpty()) {
-                Categoria categoriaPai = categoriaRepository.findById(Long.parseLong(categoriaPaiId))
-                        .orElseThrow(() -> new RuntimeException("Categoria pai não encontrada"));
-                categoria.setFkCategoriaPai(categoriaPai);
-            }
-
-            categoria.setPrioridadePadrao(Prioridade.valueOf(row.getCell(4).getStringCellValue().toUpperCase()));
-            categorias.add(categoria);
-        }
-
-        categoriaRepository.saveAll(categorias);
-
-        workbook.close();
-        file.close();
-    }
-
     public List<Categoria> listarSubcategorias(Long categoriaId) {
         Categoria categoria = categoriaRepository.findById(categoriaId)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
