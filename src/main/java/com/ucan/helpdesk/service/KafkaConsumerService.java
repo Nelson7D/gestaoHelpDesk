@@ -4,14 +4,17 @@ import com.ucan.helpdesk.model.Log;
 import com.ucan.helpdesk.model.Ticket;
 import com.ucan.helpdesk.repository.LogRepository;
 import com.ucan.helpdesk.service.TicketService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaConsumerService {
 
+    @Autowired
     LogRepository logRepository;
 
+    @Autowired
     TicketService ticketService;
 
     @KafkaListener(topics = "ticket-criado", groupId = "helpdesk-group")

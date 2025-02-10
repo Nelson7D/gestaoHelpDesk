@@ -6,11 +6,13 @@ import com.ucan.helpdesk.model.Ticket;
 import com.ucan.helpdesk.repository.UsuarioSuporteRepository;
 import com.ucan.helpdesk.repository.TicketRepository;
 import com.ucan.helpdesk.service.TicketService;
+import com.ucan.helpdesk.service.UsuarioSuporteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tecnicos")
@@ -24,12 +26,29 @@ public class UsuarioSuporteController {
 
     @Autowired
     private TicketService ticketService;
+    
+    @Autowired
+    private UsuarioSuporteService usuarioSuporteService;
 
-    // Listar todos os técnicos
     @GetMapping
-    public ResponseEntity<List<UsuarioSuporte>> listarTodosTecnicos() {
-        List<UsuarioSuporte> tecnicos = usuarioSuporteRepository.findAll();
-        return ResponseEntity.ok(tecnicos);
+    public ResponseEntity<List<UsuarioSuporte>> listarTodos() {
+        return ResponseEntity.ok(usuarioSuporteService.listarTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioSuporte> buscarPorId(@PathVariable Long id) {
+        Optional<UsuarioSuporte> usuario = usuarioSuporteService.buscarPorId(id);
+        return usuario.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<UsuarioSuporte> criarUsuarioSuporte(@RequestBody UsuarioSuporte usuarioSuporte) {
+        return ResponseEntity.ok(usuarioSuporteService.criarUsuarioSuporte(usuarioSuporte));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioSuporte> atualizarUsuarioSuporte(@PathVariable Long id, @RequestBody UsuarioSuporte usuarioSuporte) {
+        return ResponseEntity.ok(usuarioSuporteService.atualizarUsuarioSuporte(id, usuarioSuporte));
     }
 
     // Buscar técnico por tipo (ex.: Técnico, Supervisor)

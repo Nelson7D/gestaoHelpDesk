@@ -12,14 +12,15 @@ import java.util.Optional;
 @Repository
 public interface LogRepository extends JpaRepository<Log, Long> {
 
-    List<Log> findByEvento(String evento);
+    List<Log> findByEvento(EventoLog evento);
+
 
     List<Log> findByFkTicket(Ticket ticket);
 
-    Optional<Log> findByFkTicketId(Long fkTicket);
+    Optional<Log> findByFkTicketPkTicket(Long pkTicket);
+
 
     // Filtrar logs por data/hora
     List<Log> findByDataHoraBetween(Date dataInicio, Date dataFim);
 
-    List<Log> findByEvento(EventoLog evento);
 }

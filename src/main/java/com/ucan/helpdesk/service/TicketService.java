@@ -52,7 +52,7 @@ public class TicketService {
 
     public Optional<Ticket> buscarPorId(Long id) {return ticketRepository.findById(id);}
 
-    public List<Ticket> buscarPorStatus(String status) {return ticketRepository.findByStatus(status);}
+    public List<Ticket> buscarPorStatus(StatusTicket status) {return ticketRepository.findByStatus(status);}
 
     public List<Ticket> buscarPorPrioridade(Prioridade prioridade) {return ticketRepository.findByPrioridade(prioridade);}
 
@@ -77,11 +77,26 @@ public class TicketService {
         ticketRepository.save(ticket);
     }
 
+    public Ticket criarTicketPorColaborador(Long solicitanteId,String descricao) {
+        if (descricao == null || descricao.isEmpty()) {throw new IllegalArgumentException("Descrição do ticket é obrigatória");}
+
+        Colaborador solicitante = colaboradorRepository.findById(solicitanteId)
+                .orElseThrow(() -> new RuntimeException("Colaborador não encontrado"));
+
+        Ticket ticket = new Ticket();
+        ticket.setDescricao(descricao);
+        ticket.setStatus(StatusTicket.ENVIADO);
+        ticket.setFkColaborador(solicitante);
+        ticket.setDataHoraCriacao(new Date());
+
+        kafkaProducerService.enviarTicketCriado(ticket);
+        return ticket;
+    }
+
     // Abrir um novo ticket
     public Ticket novoTicket(String descricao) {
         if (descricao == null || descricao.isEmpty()) {throw new IllegalArgumentException("Descrição do ticket é obrigatória");}
 
-        // Passo 3: Obter colaborador logado
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Long idlUsuarioLogado = colaboradorRepository.findByEmail(authentication.getName()).getPkUsuario();
 
@@ -116,7 +131,7 @@ public class TicketService {
     }
     @Scheduled(fixedRate = 60000) // Executar a cada minuto
     public void triagemAutomaticaProgramada() {
-        List<Ticket> ticketsAbertos = ticketRepository.findByStatus(StatusTicket.ABERTO.name());
+        List<Ticket> ticketsAbertos = ticketRepository.findByStatus(StatusTicket.ABERTO);
 
         for (Ticket ticket : ticketsAbertos) {
             String especialidadeNecessaria = ticket.getFkCategoria().getNome();
@@ -159,7 +174,7 @@ public class TicketService {
 
     @Scheduled(fixedRate = 60000) // Executar a cada minuto
     public void escalonarTicketsAutomaticamente() {
-        List<Ticket> ticketsEmAndamento = ticketRepository.findByStatus(StatusTicket.EM_ANDAMENTO.name());
+        List<Ticket> ticketsEmAndamento = ticketRepository.findByStatus(StatusTicket.EM_ANDAMENTO);
 
         for (Ticket ticket : ticketsEmAndamento) {
             if (slaService.SLAViolado(ticket)) {
@@ -180,7 +195,7 @@ public class TicketService {
 
     @Scheduled(fixedRate = 60000) // Executar a cada minuto
     public void monitorarSLAs() {
-        List<Ticket> ticketsAbertos = ticketRepository.findByStatus(StatusTicket.ABERTO.name());
+        List<Ticket> ticketsAbertos = ticketRepository.findByStatus(StatusTicket.ABERTO);
 
         for (Ticket ticket : ticketsAbertos) {
             SLA sla = slaRepository.findByFkCategoria(ticket.getFkCategoria())

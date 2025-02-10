@@ -16,5 +16,6 @@ public interface SLARepository extends JpaRepository<SLA, Long> {
 
     Optional<SLA> findByFkCategoria(Categoria categoria);
 
-    Optional<SLA> findByFkCategoriaId(long fkCategoria);
+    Optional<SLA> findByFkCategoria_PkCategoria(long pkCategoria);
+
 }

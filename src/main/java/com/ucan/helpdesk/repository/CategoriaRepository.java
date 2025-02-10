@@ -15,10 +15,7 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
     List<Categoria> findByFkCategoriaPai(Categoria categoriaPai);
 
-    List<Categoria> findByPrioridade(Prioridade prioridade);
-
-    // Buscar categorias por palavra-chave
-    List<Categoria> findByNomeContainingIgnoreCase(String keyword);
+    List<Categoria> findByPrioridadePadrao(Prioridade prioridadePadrao);
 
     //Obter todas as subcategorias de uma categoria
     @Query("SELECT c FROM Categoria c WHERE c.fkCategoriaPai = :categoriaPai")

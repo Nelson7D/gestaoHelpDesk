@@ -36,7 +36,12 @@ public class LogService {
     }
 
     public List<Log> buscarPorEvento(String evento) {
-        return logRepository.findByEvento(evento);
+        try {
+            EventoLog eventoLog = EventoLog.valueOf(evento.toUpperCase());
+            return logRepository.findByEvento(eventoLog);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Evento inválido: " + evento);
+        }
     }
 
     public List<Log> buscarPorTicket(Ticket ticket) {

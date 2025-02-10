@@ -25,7 +25,7 @@ public class SLAController {
     // Obter SLA por categoria
     @GetMapping("/categoria/{id}")
     public ResponseEntity<SLA> listarSLAPorCategoria(@PathVariable Long id) {
-        return slaRepository.findByFkCategoriaId(id)
+        return slaRepository.findByFkCategoria_PkCategoria(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -16,14 +16,15 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     Optional<Ticket> findById(Long ig);
 
-    List<Ticket> findByStatus(String status);
+    List<Ticket> findByStatus(StatusTicket status);
 
     List<Ticket> findByPrioridade(Prioridade prioridade);
     List<Ticket> findByFkTecnicoResponsavel(UsuarioSuporte tecnico);
 
     //Tickets com SLA violado
-    @Query("SELECT t FROM Ticket t WHERE t.dataHoraCriacao + INTERVAL 't.tempoMaximoResposta MINUTE' < CURRENT_TIMESTAMP")
+    @Query(value = "SELECT * FROM ticket t WHERE t.data_hora_criacao + (t.tempo_maximo_resposta * INTERVAL '1 MINUTE') < CURRENT_TIMESTAMP", nativeQuery = true)
     List<Ticket> findTicketsComSLAViolado();
+
 
     //Tickets abertos por categoria
     List<Ticket> findByFkCategoriaAndStatus(Categoria categoria, StatusTicket status);
